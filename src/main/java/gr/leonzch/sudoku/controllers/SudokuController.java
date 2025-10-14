@@ -1,6 +1,7 @@
 package gr.leonzch.sudoku.controllers;
 
 import gr.leonzch.sudoku.models.entities.sudoku_board.SudokuBoardEntityDTO;
+import gr.leonzch.sudoku.propeties.ApplicationProperties;
 import gr.leonzch.sudoku.services.SudokuService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,19 @@ public class SudokuController {
     @Autowired
     SudokuService sudokuService;
 
+    @Autowired
+    ApplicationProperties applicationProperties;
+
     @GetMapping()
     public String apiBase() {
-        return "/sudoku api";
+        return applicationProperties.getApiBaseSudoku() + " api";
     }
 
     @GetMapping(value = "/")
     public String apiInfo(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
-        sb.append("/sudoku API provides tha following endpoints:\n");
-        sb.append("* /generate/{difficulty} | GET | difficulty: 1 to 4 | <a>" + request.getContextPath() + "</a>\n");
+        sb.append(applicationProperties.getApiBaseSudoku()).append(" API provides tha following endpoints:\n");
+        sb.append("* ").append(applicationProperties.getApiBaseSudokuGenerate()).append("/{difficulty} | GET | difficulty: 1 to 4 | ").append(request.getContextPath()).append("\n");
 
         return sb.toString();
     }

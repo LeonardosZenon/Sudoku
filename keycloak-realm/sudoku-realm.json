@@ -1,0 +1,54 @@
+{
+  "realm": "sudoku",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "verifyEmail": true,
+  "smtpServer": {
+    "host": "${KC_MAIL_HOST}",
+    "port": "${KC_MAIL_PORT}",
+    "from": "${KC_MAIL_FROM}",
+    "fromDisplayName": "${KC_MAIL_FROM_DISPLAY_NAME:SUDOKU REALM}",
+    "replyTo": "${KC_MAIL_REPLY_TO:${KC_MAIL_FROM}}",
+    "auth": "true",
+    "user": "${KC_MAIL_AUTH_USERNAME}",
+    "password": "${KC_MAIL_AUTH_PASSWORD}",
+    "starttls": "${KC_MAIL_STARTTLS:true}",
+    "ssl": "${KC_MAIL_SSL:false}"
+  },
+  "users": [],
+  "clients": [
+    {
+      "clientId": "sudoku-api",
+      "name": "Sudoku API",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "secret": "mysupersecret",
+      "redirectUris": [
+        "http://localhost:8081/api/*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "rootUrl": "http://localhost:8081",
+      "baseUrl": "/api/sudoku",
+      "defaultClientScopes": [
+        "email",
+        "profile",
+        "roles",
+        "web-origins"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:8081/api/*"
+      }
+    }
+  ]
+}

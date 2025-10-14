@@ -17,13 +17,21 @@ RUN curl -L  \
 COPY target/*.jar app.jar
 COPY start.sh /app/start.sh
 
-RUN chmod +x /app/start.sh EXPOSE 8080 8081
+RUN chmod +x /app/start.sh
 
+EXPOSE 8080 8081
+
+COPY keycloak-realm/sudoku-realm.json /opt/keycloak/data/import/sudoku-realm.json
+
+ENV KEYCLOAK_BASE_URL=http://localhost:8080
 ENV KC_BOOTSTRAP_ADMIN_USERNAME=admin
 ENV KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+ENV KEYCLOAK_IMPORT_STRATEGY=IGNORE_EXISTING
+ENV KC_IMPORT=/opt/keycloak/data/import/sudoku-realm.json
 
+# For Windows & Mac Host OS : For Linux Host OS
 ENV POSTGRESQL_DATABASE_IP=host.docker.internal
-ENV SPRING_PROFILES_ACTIVE=docker
+
 ENV SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI=http://localhost:8080/realms/sudoku
 ENV SPRING_PROFILES_ACTIVE=docker
 ENV SERVER_PORT=8081

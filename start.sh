@@ -25,12 +25,12 @@
 set -e
 
 # Start Keycloak in background
-/opt/keycloak/bin/kc.sh start-dev --http-port=8080 --hostname-strict=false &
+/opt/keycloak/bin/kc.sh start-dev --http-port=8080 --hostname-strict=false --import-realm &
 KC_PID=$!
 
 echo "[INFO] KEYCLOAK: Configured to start on port 8080..."
 for i in $(seq 1 12); do
-  if curl -sSf http://localhost:8080/health/ready >/dev/null 2>&1; then
+  if curl -sSf http://localhost:8080/ >/dev/null 2>&1; then
     echo "[INFO] KEYCLOAK: Up & Running"
     break
   else
@@ -73,5 +73,5 @@ else
 fi
 
 # --- Start Spring Boot ---
-echo "🚀 Starting Spring Boot app..."
+echo "[INFO] SPRINGBOOT: Starting Spring Boot app..."
 java -jar /app/app.jar

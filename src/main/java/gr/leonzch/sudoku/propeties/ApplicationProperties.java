@@ -11,6 +11,9 @@ public class ApplicationProperties {
     @Value("${server.port}")
     private int serverPort;
 
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
     @Value("${api.base.sudoku}")
     private String apiBaseSudoku;
 

@@ -13,16 +13,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/**", "/api/error", "/api/actuator/**")
+                        .requestMatchers("/user/**", "/error", "/actuator/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
                 )
                 .oauth2Login(oauth -> oauth
-                        .defaultSuccessUrl("/api/sudoku", true)
+                        .defaultSuccessUrl("/user/me", true)
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/api/user/login")
+                        .logoutSuccessUrl("/user/login")
                 )
                 .csrf(csrf -> csrf.disable());
 

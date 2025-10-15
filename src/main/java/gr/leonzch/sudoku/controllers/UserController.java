@@ -55,21 +55,6 @@ public class UserController {
                 + "&redirect_uri=http://localhost:8081/api/user/me";
     }
 
-//    @GetMapping("${api.base.user.me}")
-//    public String getCurrentUser(@AuthenticationPrincipal OAuth2AuthenticationToken token) {
-//        if (token == null) {
-//            throw new RuntimeException("User is not authenticated");
-//        }
-//
-//        Map<String, Object> attributes = token.getPrincipal().getAttributes();
-//        String username = (String) attributes.get("preferred_username");
-//        String email = (String) attributes.get("email");
-//
-//        var user = userService.findOrCreateUser(username, email);
-//
-//        return "redirect:" + applicationProperties.getApiBaseSudoku() + "/";
-//    }
-
     @GetMapping("${api.base.user.oauth2debug}")
     @ResponseBody
     public Object debugAuth(Authentication authentication, HttpServletRequest request) {
@@ -91,6 +76,6 @@ public class UserController {
             Logging.log(LoggingTypes.INFO, "Saved user: " + username + " / " + email);
         }
 
-        return "redirect:" + applicationProperties.getApiBaseSudoku() + "/";
+        return "redirect:/index.html";
     }
 }

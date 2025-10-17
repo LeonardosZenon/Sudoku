@@ -72,3 +72,4 @@ java -jar /app/app.jar &
 APP_PID=$!
 
 wait -n $KC_PID $APP_PID
+

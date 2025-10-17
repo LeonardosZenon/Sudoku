@@ -24,6 +24,11 @@ public class User {
     @Column(name = "email", columnDefinition = "varchar(255)")
     private String email;
 
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<UserSudokuBoard> userSudokuBoards = new ArrayList<>();
 }

@@ -1,0 +1,13 @@
+body {
+    background-color: antiquewhite;
+    font-family: "Roboto", sans-serif;
+}
+
+.v-application {
+    min-height: 100vh;
+}
+
+.v-container {
+    max-width: 960px;
+    margin: auto;
+}

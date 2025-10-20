@@ -1,5 +1,6 @@
 package gr.leonzch.sudoku.models.entities.user_sudoku_board;
 
+import gr.leonzch.sudoku.models.entities.constant_entities.sudoku_status.SudokuStatus;
 import gr.leonzch.sudoku.models.entities.sudoku_board.SudokuBoard;
 import gr.leonzch.sudoku.models.entities.user.User;
 import jakarta.persistence.*;
@@ -29,5 +30,17 @@ public class UserSudokuBoard {
     @JoinColumn(name = "sudoku_board_id")
     private SudokuBoard sudokuBoard;
 
-    private boolean solved;
+    @ManyToOne
+    @JoinColumn(name = "status_id",
+            referencedColumnName = "id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_user_sudoku_board_status"),
+            columnDefinition = "bigint default 1")
+    private SudokuStatus status;
+
+    @Column(name = "grid_current", columnDefinition = "varchar(81)", nullable = false)
+    private String gridCurrent;
+
+    @Column(name = "wrong_validations_count", nullable = false)
+    private int wrongValidationsCount;
 }

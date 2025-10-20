@@ -1,13 +1,11 @@
-body {
-    background-color: antiquewhite;
-    font-family: "Roboto", sans-serif;
+.sudoku-grid {
+    display: grid;
+    gap: 5px;
 }
 
-.v-application {
-    min-height: 100vh;
-}
-
-.v-container {
-    max-width: 960px;
-    margin: auto;
+.sudoku-cell input {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 0;
 }

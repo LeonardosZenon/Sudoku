@@ -1,10 +1,14 @@
 package gr.leonzch.sudoku.models.entities.user;
 
+import gr.leonzch.sudoku.models.entities.user_sudoku_board.UserSudokuBoard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +33,6 @@ public class User {
         this.email = email;
     }
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<UserSudokuBoard> userSudokuBoards = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSudokuBoard> userSudokuBoards = new ArrayList<>();
 }

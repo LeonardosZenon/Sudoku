@@ -1,11 +1,15 @@
 package gr.leonzch.sudoku.models.entities.sudoku_board;
 
-import gr.leonzch.sudoku.models.entities.sudoku_difficulty.SudokuDifficulty;
+import gr.leonzch.sudoku.models.entities.constant_entities.sudoku_difficulty.SudokuDifficulty;
+import gr.leonzch.sudoku.models.entities.user_sudoku_board.UserSudokuBoard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sudoku_board")
@@ -33,8 +37,8 @@ public class SudokuBoard {
             columnDefinition = "bigint default 1")
     private SudokuDifficulty difficultyEntity;
 
-//    @OneToMany(mappedBy = "sudokuBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<UserSudokuBoard> userSudokuBoards = new ArrayList<>();
+    @OneToMany(mappedBy = "sudokuBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSudokuBoard> userSudokuBoards = new ArrayList<>();
 
     public void setDifficulty(SudokuDifficulty sudokuDifficultyEntity) {
         this.difficultyEntity = sudokuDifficultyEntity;

@@ -32,5 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/application.secrets.properties
+/src/main/resources/application-prod.secrets.properties
 
 node_modules

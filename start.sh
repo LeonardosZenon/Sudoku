@@ -1,25 +1,34 @@
 #!/bin/bash
 set -e
 
+KC_PID=0
+APP_PID=0
+
 term_handler() {
   echo "[INFO] Caught SIGTERM, stopping processes..."
-  if [ $KC_PID -ne 0 ]; then
+
+  if [ "$KC_PID" -ne 0 ] && ps -p "$KC_PID" > /dev/null 2>&1; then
     echo "[INFO] Stopping Keycloak (PID $KC_PID)"
-    kill -TERM "$KC_PID" 2>/dev/null
+    kill -TERM "$KC_PID" 2>/dev/null || true
+    pkill -P "$KC_PID" 2>/dev/null || true
   fi
-  if [ $APP_PID -ne 0 ]; then
+
+  if [ "$APP_PID" -ne 0 ] && ps -p "$APP_PID" > /dev/null 2>&1; then
     echo "[INFO] Stopping Spring Boot (PID $APP_PID)"
-    kill -TERM "$APP_PID" 2>/dev/null
+    kill -TERM "$APP_PID" 2>/dev/null || true
+    pkill -P "$APP_PID" 2>/dev/null || true
   fi
-  wait "$KC_PID"
-  wait "$APP_PID"
+
+  wait "$KC_PID" 2>/dev/null || true
+  wait "$APP_PID" 2>/dev/null || true
+  echo "[INFO] All processes stopped. Exiting cleanly."
   exit 0
 }
 trap term_handler SIGTERM SIGINT
 
 # Start Keycloak in background
 /opt/keycloak/bin/kc.sh start-dev --http-port=8080 --hostname-strict=false --import-realm &
-KC_PID=$!
+KC_LAUNCH_PID=$!
 
 echo "[INFO] KEYCLOAK: Configured to start on port 8080..."
 for i in $(seq 1 12); do
@@ -33,9 +42,18 @@ for i in $(seq 1 12); do
 done
 if [ "$i" -eq 12 ]; then
   echo "[ERROR] KEYCLOAK: Failed to start after 60 seconds."
-  kill $KC_PID
+  kill -TERM "$KC_LAUNCH_PID" 2>/dev/null || true
   exit 1
 fi
+
+# get real Keycloak Java process PID
+KC_PID=$(pgrep -f "keycloak.*quarkus-run.jar" | head -n1 || true)
+if [ -z "$KC_PID" ]; then
+  echo "[WARN] Could not find running Keycloak Java process; fallback to launcher PID"
+  KC_PID=$KC_LAUNCH_PID
+fi
+
+echo "[INFO] KEYCLOAK PID: $KC_PID"
 
 echo "[INFO] KEYCLOAK: Applying configurations..."
 
@@ -71,5 +89,11 @@ echo "[INFO] SPRINGBOOT: Starting Spring Boot app..."
 java -jar /app/app.jar &
 APP_PID=$!
 
-wait -n $KC_PID $APP_PID
+echo "[INFO] SPRINGBOOT PID: $APP_PID"
 
+# --- Wait for processes ---
+echo "[INFO] Waiting for Keycloak (PID $KC_PID) and Spring Boot (PID $APP_PID)..."
+wait -n "$KC_PID" "$APP_PID"
+
+echo "[WARN] One of the processes has exited — cleaning up..."
+term_handler

@@ -1,4 +1,4 @@
-package gr.leonzch.sudoku.models.entities.sudoku_difficulty;
+package gr.leonzch.sudoku.models.entities.constant_entities.sudoku_difficulty;
 
 
 import gr.leonzch.sudoku.enums.SudokuDifficultyConstants;
@@ -22,10 +22,10 @@ public class SudokuDifficulty {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    private String difficulty;
+    private String label;
 
-    public SudokuDifficulty(SudokuDifficultyConstants level) {
-        this.id = level.getId();
-        this.difficulty = level.getLabel();
+    public SudokuDifficulty(SudokuDifficultyConstants constant) {
+        this.id = constant.getId();
+        this.label = constant.getLabel();
     }
 }

@@ -2,19 +2,16 @@ package gr.leonzch.sudoku.enums;
 
 import lombok.Getter;
 
-import java.util.Map;
-
 @Getter
-public enum SudokuDifficultyConstants {
-    EASY(1, "EASY"),
-    MEDIUM(2, "MEDIUM"),
-    HARD(3, "HARD"),
-    EXTREME(4, "EXTREME");
+public enum SudokuStatusConstants {
+    SOLVED(1, "SOLVED"),
+    LOST(2, "LOST"),
+    IN_PROGRESS(3, "IN_PROGRESS");
 
     private final long id;
     private final String label;
 
-    SudokuDifficultyConstants(long id, String label) {
+    SudokuStatusConstants(long id, String label) {
         this.id = id;
         this.label = label;
     }
@@ -24,7 +21,7 @@ public enum SudokuDifficultyConstants {
     }
 
     public static boolean exists(long id) {
-        for (SudokuDifficultyConstants constant : values()) {
+        for (SudokuStatusConstants constant : values()) {
             if (constant.id == id) {
                 return true;
             }
@@ -36,10 +33,10 @@ public enum SudokuDifficultyConstants {
         return exists(id) ? values()[(int) id - 1].getLabel() : null;
     }
 
-    public static SudokuDifficultyConstants getById(long id) {
-        for (SudokuDifficultyConstants difficulty : values()) {
-            if (difficulty.id == id) {
-                return difficulty;
+    public static SudokuStatusConstants getById(long id) {
+        for (SudokuStatusConstants status : values()) {
+            if (status.id == id) {
+                return status;
             }
         }
         return null;

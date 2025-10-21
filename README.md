@@ -4,8 +4,8 @@
 
 <!-- TOC -->
 * [SUDOKU](#sudoku)
-  * [DOCKER](#docker)
   * [DATABASE](#database)
+  * [DOCKER](#docker)
 <!-- TOC -->
 
 ---

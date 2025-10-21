@@ -5,7 +5,16 @@
 <!-- TOC -->
 * [SUDOKU](#sudoku)
   * [DOCKER](#docker)
+  * [DATABASE](#database)
 <!-- TOC -->
+
+---
+
+## DATABASE
+**provide your own postgres**
+
+* To setup another database and schena to connect to, change the application.properties
+
 
 ---
 

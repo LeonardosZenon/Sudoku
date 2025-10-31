@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>SUDOKU</title>
-
-    <!-- IMPORTS: Vue.js, Vuetify, Axios -->
-    <!-- VUE -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- VUETIFY -->
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.10.5/dist/vuetify.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.10.5/dist/vuetify.min.css"/>
-    <!-- AXIOS -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <!-- IMPORTS: custom -->
-    <link rel="stylesheet" href="./css/styles.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>SUDOKU ENGINE</title>
 </head>
 <body>
+<div id="app">
+    <v-app>
+        <sudoku-game></sudoku-game>
+    </v-app>
+</div>
 
-<!-- Vue mount point -->
-<div id="app"></div>
-
-<script type="module" src="./js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

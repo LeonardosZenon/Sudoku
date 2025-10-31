@@ -1,11 +1,112 @@
-.sudoku-grid {
-    display: grid;
-    gap: 5px;
+.sudoku-board {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #000;
+    margin: 20px auto;
+    max-width: 360px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
+.sudoku-row {
+    display: flex;
+}
+
+.sudoku-cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #d0d0d0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+/* Stronger right border for each 3rd column */
+.sudoku-cell:nth-child(3n) {
+    border-right: 2px solid #222;
+}
+
+/* Stronger bottom border for each 3rd row */
+.sudoku-row:nth-child(3n) .sudoku-cell {
+    border-bottom: 2px solid #222;
+}
+
+/* Thicker top border for the first row and left border for the first column to create the outer frame */
+.sudoku-row:first-child .sudoku-cell {
+    border-top: 2px solid #222;
+}
+.sudoku-row .sudoku-cell:first-child {
+    border-left: 2px solid #222;
+}
+
+.initial {
+    background-color: #f3f4f6;
+    font-weight: 600;
+}
+
+/* Remove inner Vuetify input slot borders and backgrounds so only the cell borders are visible */
+.sudoku-cell .v-input__slot,
+.sudoku-cell .v-text-field__slot,
+.sudoku-cell .v-input--is-focused .v-input__slot {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Remove any remaining underline pseudo-elements from Vuetify inputs inside the grid */
+.sudoku-cell .v-input__slot::before,
+.sudoku-cell .v-input__slot::after,
+.sudoku-cell .v-text-field__slot::before,
+.sudoku-cell .v-text-field__slot::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove focus underline/shadow */
+.sudoku-cell .v-input--is-focused .v-input__slot,
+.sudoku-cell .v-input--is-focused .v-text-field__slot {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Prevent label/placeholder overlap */
+.sudoku-cell .v-label { display: none !important; }
+
+/* Make the native input fill the cell and center the digit */
 .sudoku-cell input {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.2em;
-    padding: 0;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    font-size: 16px;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Hide detail/error text from Vuetify (we show minimal UI) */
+.sudoku-cell .v-messages { display: none !important; }
+
+/* Remove number input spinners for WebKit and Firefox */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] { -moz-appearance: textfield; }
+
+/* Slightly increase readable font for the whole board */
+.sudoku-board .v-text-field input {
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Make the board responsive on small screens */
+@media (max-width: 420px) {
+    .sudoku-board { max-width: 300px; }
+    .sudoku-cell { width: 34px; height: 34px; }
+    .sudoku-board .v-text-field input { font-size: 14px; }
 }

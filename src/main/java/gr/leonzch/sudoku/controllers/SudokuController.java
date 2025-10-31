@@ -63,7 +63,7 @@ public class SudokuController {
     }
 
     @PostMapping(value = "${api.base.sudoku.validate}")
-    public boolean validate(@RequestBody SudokuBoardEntityDTO sudokuBoardEntityDTO, @AuthenticationPrincipal OidcUser oidcUser) {
+    public SudokuBoardEntityDTO validate(@RequestBody SudokuBoardEntityDTO sudokuBoardEntityDTO, @AuthenticationPrincipal OidcUser oidcUser) {
         long userId = userService.findUserIdFromOidc(oidcUser);
 
         return sudokuService.validate(sudokuBoardEntityDTO, userId);

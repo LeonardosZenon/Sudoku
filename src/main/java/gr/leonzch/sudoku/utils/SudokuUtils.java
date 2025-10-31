@@ -409,25 +409,60 @@ public class SudokuUtils {
         return sudokuBoardEntityDTO;
     }
 
-    public boolean validateMove(SudokuBoardEntityDTO sudokuBoardEntityDTO, long userId) {
+    public UserSudokuBoard validateMove(SudokuBoardEntityDTO sudokuBoardEntityDTO, long userId) {
+        // Validate input DTO
+        if (sudokuBoardEntityDTO == null) {
+            throw new IllegalArgumentException("sudokuBoardEntityDTO is null");
+        }
+        if (sudokuBoardEntityDTO.getMove() == null) {
+            throw new IllegalArgumentException("Move cannot be null");
+        }
+
         int value = sudokuBoardEntityDTO.getMove().getValue();
         int x = sudokuBoardEntityDTO.getMove().getPosition().getX();
         int y = sudokuBoardEntityDTO.getMove().getPosition().getY();
 
-        Optional<UserSudokuBoard> userSudokuBoardOptional =userSudokuBoardRepository.findByUser_IdAndSudokuBoard_Id(userId, sudokuBoardEntityDTO.getId());
-        if (userSudokuBoardOptional.isPresent()) {
-            UserSudokuBoard userSudokuBoard = userSudokuBoardOptional.get();
-            SudokuBoard board = userSudokuBoard.getSudokuBoard();
-            if (value == board.getGridSolved().charAt(x * 9 + y)) {
-                String gc = userSudokuBoard.getGridCurrent();
-                userSudokuBoard.setGridCurrent(gc.substring(0, x * 9 + y) + value + gc.substring(x * 9 + y));
-                userSudokuBoardRepository.save(userSudokuBoard);
-                return true;
-            } else {
-                userSudokuBoard.setWrongValidationsCount(userSudokuBoard.getWrongValidationsCount() + 1);
+        // bounds check
+        if (x < 0 || x >= 9 || y < 0 || y >= 9) {
+            throw new IllegalArgumentException("Move position out of bounds: x=" + x + " y=" + y);
+        }
+
+        Optional<UserSudokuBoard> userSudokuBoardOptional = userSudokuBoardRepository.findByUser_IdAndSudokuBoard_Id(userId, sudokuBoardEntityDTO.getId());
+        if (userSudokuBoardOptional.isEmpty()) {
+            throw new IllegalArgumentException("No Sudoku board found for user id: " + userId + " and board id: " + sudokuBoardEntityDTO.getId());
+        }
+
+        UserSudokuBoard userSudokuBoard = userSudokuBoardOptional.get();
+        SudokuBoard board = userSudokuBoard.getSudokuBoard();
+
+        String solved = board.getGridSolved();
+        if (solved == null || solved.length() != 81) {
+            throw new IllegalStateException("Invalid solved grid stored for board id: " + board.getId());
+        }
+
+        int pos = x * 9 + y;
+        int solvedValue = Character.getNumericValue(solved.charAt(pos));
+
+        if (value == solvedValue) {
+            String gc = userSudokuBoard.getGridCurrent();
+            if (gc == null || gc.length() != 81) {
+                // initialize if missing
+                gc = solved.replaceAll("[1-9]", "0");
+                gc = board.getGridPlayable() != null ? board.getGridPlayable() : gc;
+            }
+            // replace character at pos
+            String updated = gc.substring(0, pos) + value + gc.substring(pos + 1);
+            userSudokuBoard.setGridCurrent(updated);
+            if (userSudokuBoard.getSudokuBoard().getGridSolved().equals(userSudokuBoard.getGridCurrent())) {
+                userSudokuBoard.setStatus(new SudokuStatus(SudokuStatusConstants.SOLVED));
             }
             userSudokuBoardRepository.save(userSudokuBoard);
+            return userSudokuBoard;
+        } else {
+            // wrong move
+            userSudokuBoard.setWrongValidationsCount(userSudokuBoard.getWrongValidationsCount() + 1);
+            userSudokuBoardRepository.save(userSudokuBoard);
+            return userSudokuBoard;
         }
-        return false;
     }
 }

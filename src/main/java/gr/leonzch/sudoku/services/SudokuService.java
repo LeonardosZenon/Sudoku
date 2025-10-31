@@ -50,8 +50,8 @@ public class SudokuService {
         return sudokuUtils.createDTOToContinueBoard(userSudokuBoard);
     }
 
-    public boolean validate(SudokuBoardEntityDTO sudokuBoardEntityDTO, long userId) {
-        return sudokuUtils.validateMove(sudokuBoardEntityDTO, userId);
+    public SudokuBoardEntityDTO validate(SudokuBoardEntityDTO sudokuBoardEntityDTO, long userId) {
+        return sudokuUtils.createDTOToContinueBoard(sudokuUtils.validateMove(sudokuBoardEntityDTO, userId));
     }
 
     public long getSolvedCountByDifficulty(int difficulty) {
